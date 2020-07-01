@@ -1,10 +1,17 @@
 using System;
+using MathNet.Numerics.LinearAlgebra;
 using Emgu.TF.Lite;
 
 namespace DBot.Perception
 {
   public class DepthMapGenerator : IDisposable
   {
+    /// <summary>
+    /// The number of pixel steps to take for each sample of the depth map.
+    /// </summary>
+    const int DEPTH_MAP_STRIDE_LENGTH = 1;
+
+
     const string MODEL_PATH = "";
 
     private Interpreter modelInterpreter;
@@ -16,9 +23,9 @@ namespace DBot.Perception
       modelInterpreter.AllocateTensors();
     }
 
-    public void Generate()
+    public Matrix<double> Generate()
     {
-
+      return null;
     }
 
     public void Dispose()
