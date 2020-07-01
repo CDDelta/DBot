@@ -1,8 +1,8 @@
 using Microsoft.Extensions.DependencyInjection;
 
-namespace DBot.Controls
+namespace DBot.Control
 {
-  public class ControlsModule : IModule
+  public class ControlModule : IModule
   {
     public void Initialise(IServiceCollection serviceCollection)
     {

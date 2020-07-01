@@ -7,7 +7,7 @@ using DBot.Input;
 using DBot.Perception;
 using DBot.State;
 using DBot.Planning;
-using DBot.Controls;
+using DBot.Control;
 
 namespace DBot
 {
@@ -20,7 +20,7 @@ namespace DBot
     private readonly PerceptionModule perception;
     private readonly StateModule state;
     private readonly PlanningModule planning;
-    private readonly ControlsModule controls;
+    private readonly ControlModule control;
 
     public Application(IServiceCollection serviceCollection)
     {
@@ -46,8 +46,8 @@ namespace DBot
       planning.Initialise(serviceCollection);
 
       Logger.LogInformation("Initialising controls module...");
-      controls = new ControlsModule();
-      controls.Initialise(serviceCollection);
+      control = new ControlModule();
+      control.Initialise(serviceCollection);
 
       Logger.LogInformation("Starting update loop...");
       Start();
