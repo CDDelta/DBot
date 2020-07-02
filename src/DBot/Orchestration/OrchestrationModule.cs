@@ -29,12 +29,12 @@ namespace DBot.Orchestration
 
       return Task.Run(async () =>
       {
-        while (true)
+        while (!cancellationToken.IsCancellationRequested)
         {
           foreach (var module in modules)
             await module.UpdateAsync(cancellationToken);
         }
-      });
+      }, cancellationToken);
     }
 
     public Task StopAsync(CancellationToken cancellationToken) => Task.CompletedTask;
