@@ -9,7 +9,7 @@ namespace DBot
     {
       var serviceCollection = new ServiceCollection();
       ConfigureServices(serviceCollection);
-      var application = new Application(serviceCollection);
+      var system = new System(serviceCollection);
     }
 
     static private void ConfigureServices(IServiceCollection serviceCollection)

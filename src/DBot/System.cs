@@ -12,7 +12,7 @@ using DBot.Control;
 
 namespace DBot
 {
-  public class Application
+  public class System
   {
     public IServiceProvider Services { get; }
     public ILogger Logger { get; }
@@ -24,12 +24,12 @@ namespace DBot
     private readonly PlanningModule planning;
     private readonly ControlModule control;
 
-    public Application(IServiceCollection serviceCollection)
+    public System(IServiceCollection serviceCollection)
     {
       ConfigureServices(serviceCollection);
       Services = serviceCollection.BuildServiceProvider();
       Logger = Services.GetRequiredService<ILoggerFactory>()
-              .CreateLogger<Application>();
+              .CreateLogger<System>();
 
       Logger.LogInformation("Initialising input module...");
       input = new InputModule();
