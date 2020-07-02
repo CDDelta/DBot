@@ -4,6 +4,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 
 using DBot.Input;
+using DBot.Director;
 using DBot.Perception;
 using DBot.State;
 using DBot.Planning;
@@ -17,6 +18,7 @@ namespace DBot
     public ILogger Logger { get; }
 
     private readonly InputModule input;
+    private readonly DirectorModule director;
     private readonly PerceptionModule perception;
     private readonly StateModule state;
     private readonly PlanningModule planning;
@@ -33,6 +35,10 @@ namespace DBot
       input = new InputModule();
       input.Initialise(serviceCollection);
 
+      Logger.LogInformation("Initialising director module...");
+      director = new DirectorModule();
+      director.Initialise(serviceCollection);
+
       Logger.LogInformation("Initialising perception module...");
       perception = new PerceptionModule();
       perception.Initialise(serviceCollection);
@@ -45,7 +51,7 @@ namespace DBot
       planning = new PlanningModule();
       planning.Initialise(serviceCollection);
 
-      Logger.LogInformation("Initialising controls module...");
+      Logger.LogInformation("Initialising control module...");
       control = new ControlModule();
       control.Initialise(serviceCollection);
 
