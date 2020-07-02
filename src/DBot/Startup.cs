@@ -1,4 +1,7 @@
-﻿using Microsoft.Extensions.Hosting;
+﻿using System;
+using System.IO;
+using Microsoft.Extensions.Hosting;
+using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Configuration;
 
@@ -16,36 +19,52 @@ namespace DBot
   {
     static void Main(string[] args)
     {
-      CreateHostBuilder(args).Build().Run();
+      var host = CreateHostBuilder(args).UseConsoleLifetime().Build();
+      host.RunAsync();
+
+      var consoleInput = host.Services.GetService<ConsoleInput>();
+      while (true)
+      {
+        var line = Console.ReadLine();
+        consoleInput.OnReceived(line);
+      }
     }
 
     public static IHostBuilder CreateHostBuilder(string[] args) =>
-        Host.CreateDefaultBuilder(args)
+        (new HostBuilder())
+            .UseContentRoot(Directory.GetCurrentDirectory())
             .ConfigureHostConfiguration(configBuilder =>
             {
-              //configBuilder.AddYamlFile("config.yaml", optional: false, reloadOnChange: true);
+              configBuilder.SetBasePath(Directory.GetCurrentDirectory());
+              configBuilder.AddYamlFile("config.yaml", optional: false, reloadOnChange: true);
+            })
+            .ConfigureLogging((hostingContext, logging) =>
+            {
+              logging.AddDebug();
             })
             .ConfigureServices((hostContext, services) =>
             {
               var config = hostContext.Configuration;
               services.AddOptions();
 
-              services.AddHostedService<OrchestrationModule>();
-
-              services.AddHostedService<InputModule>();
+              services
+                .AddHostedService<InputModule>()
+                .AddSingleton<ConsoleInput>();
 
               services.AddHostedService<DirectorModule>();
 
               services
                 .AddHostedService<PerceptionModule>()
                 .Configure<PerceptionOptions>(config.GetSection(PerceptionOptions.Perception))
-                .AddSingleton(typeof(PointCloudBuilder));
+                .AddSingleton<PointCloudBuilder>();
 
               services.AddHostedService<StateModule>();
 
               services.AddHostedService<PlanningModule>();
 
               services.AddHostedService<ControlModule>();
+
+              services.AddHostedService<OrchestrationModule>();
             });
   }
 }
