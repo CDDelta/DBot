@@ -5,17 +5,23 @@ using Microsoft.Extensions.Logging;
 
 namespace DBot.State
 {
-  public class StateModule : IHostedService
+  public class StateModule : IHostedService, IUpdatableModule
   {
+    private readonly ILogger<StateModule> logger;
 
-    public Task StartAsync(CancellationToken cancellationToken)
+    public StateModule(ILogger<StateModule> logger)
     {
-      return Task.CompletedTask;
+      this.logger = logger;
     }
 
-    public Task StopAsync(CancellationToken cancellationToken)
+    public Task StartAsync(CancellationToken cancellationToken) => Task.CompletedTask;
+
+    public async Task UpdateAsync(CancellationToken cancellationToken)
     {
-      return Task.CompletedTask;
+      logger.LogInformation("Updating...");
+      await Task.Delay(1000);
     }
+
+    public Task StopAsync(CancellationToken cancellationToken) => Task.CompletedTask;
   }
 }

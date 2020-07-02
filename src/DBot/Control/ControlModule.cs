@@ -7,14 +7,8 @@ namespace DBot.Control
 {
   public class ControlModule : IHostedService
   {
-    public Task StartAsync(CancellationToken cancellationToken)
-    {
-      return Task.CompletedTask;
-    }
+    public Task StartAsync(CancellationToken cancellationToken) => Task.CompletedTask;
 
-    public Task StopAsync(CancellationToken cancellationToken)
-    {
-      return Task.CompletedTask;
-    }
+    public Task StopAsync(CancellationToken cancellationToken) => Task.CompletedTask;
   }
 }

@@ -2,6 +2,7 @@
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Configuration;
 
+using DBot.Orchestration;
 using DBot.Input;
 using DBot.Director;
 using DBot.Perception;
@@ -27,9 +28,9 @@ namespace DBot
             .ConfigureServices((hostContext, services) =>
             {
               var config = hostContext.Configuration;
-              services
-                .AddOptions()
-                .Configure<PerceptionOptions>(config.GetSection(PerceptionOptions.Perception));
+              services.AddOptions();
+
+              services.AddHostedService<OrchestrationModule>();
 
               services.AddHostedService<InputModule>();
 
@@ -37,6 +38,7 @@ namespace DBot
 
               services
                 .AddHostedService<PerceptionModule>()
+                .Configure<PerceptionOptions>(config.GetSection(PerceptionOptions.Perception))
                 .AddSingleton(typeof(PointCloudBuilder));
 
               services.AddHostedService<StateModule>();
