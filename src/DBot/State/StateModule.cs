@@ -1,12 +1,21 @@
-using Microsoft.Extensions.DependencyInjection;
+using System.Threading;
+using System.Threading.Tasks;
+using Microsoft.Extensions.Hosting;
+using Microsoft.Extensions.Logging;
 
 namespace DBot.State
 {
-  public class StateModule : IModule
+  public class StateModule : IHostedService
   {
-    public void Initialise(IServiceCollection serviceCollection)
-    {
 
+    public Task StartAsync(CancellationToken cancellationToken)
+    {
+      return Task.CompletedTask;
+    }
+
+    public Task StopAsync(CancellationToken cancellationToken)
+    {
+      return Task.CompletedTask;
     }
   }
 }

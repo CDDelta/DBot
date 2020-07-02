@@ -4,7 +4,7 @@ using Emgu.TF.Lite;
 
 namespace DBot.Perception
 {
-  public class MLDepthMapGenerator : IDepthMapAcquirer, IDisposable
+  public class MLDepthMapAcquirer : IDepthMapAcquirer, IDisposable
   {
     /// <summary>
     /// The number of pixel steps to take for each sample of the depth map.
@@ -15,7 +15,7 @@ namespace DBot.Perception
 
     private Interpreter modelInterpreter;
 
-    public MLDepthMapGenerator()
+    public MLDepthMapAcquirer()
     {
       var modelBuffer = new FlatBufferModel(MODEL_PATH);
       modelInterpreter = new Interpreter(modelBuffer);
