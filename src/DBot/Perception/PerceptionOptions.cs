@@ -1,4 +1,4 @@
-namespace DBot
+namespace DBot.Perception
 {
   public class PerceptionOptions
   {
