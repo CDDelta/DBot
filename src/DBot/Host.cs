@@ -14,11 +14,11 @@ namespace DBot
 
     static private void ConfigureServices(IServiceCollection serviceCollection)
     {
-      serviceCollection.AddLogging(logging =>
-        {
-          logging.AddDebug();
-        }
-      );
+      serviceCollection
+        .AddLogging(logging =>
+          {
+            logging.AddDebug();
+          });
     }
   }
 }

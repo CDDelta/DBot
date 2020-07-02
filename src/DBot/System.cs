@@ -1,7 +1,10 @@
 using System;
+using System.IO;
 using System.Threading.Tasks;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Logging.Debug;
+using Microsoft.Extensions.Configuration;
 
 using DBot.Input;
 using DBot.Director;
@@ -27,9 +30,10 @@ namespace DBot
     public System(IServiceCollection serviceCollection)
     {
       ConfigureServices(serviceCollection);
-      Services = serviceCollection.BuildServiceProvider();
-      Logger = Services.GetRequiredService<ILoggerFactory>()
-              .CreateLogger<System>();
+
+      var loggerFactory = new LoggerFactory();
+      loggerFactory.AddProvider(new DebugLoggerProvider());
+      Logger = loggerFactory.CreateLogger<System>();
 
       Logger.LogInformation("Initialising input module...");
       input = new InputModule();
@@ -56,6 +60,7 @@ namespace DBot
       control.Initialise(serviceCollection);
 
       Logger.LogInformation("Starting update loop...");
+      Services = serviceCollection.BuildServiceProvider();
       Start();
 
       Logger.LogInformation("DBot initialised successfully.");
@@ -74,12 +79,18 @@ namespace DBot
 
     public void Update()
     {
-
     }
 
     private void ConfigureServices(IServiceCollection serviceCollection)
     {
+      IConfigurationBuilder configBuilder = new ConfigurationBuilder()
+        .SetBasePath(Directory.GetCurrentDirectory())
+        .AddYamlFile("config.yaml", optional: false, reloadOnChange: true);
 
+      IConfiguration config = configBuilder.Build();
+
+      serviceCollection.AddOptions();
+      serviceCollection.Configure<PerceptionOptions>(config.GetSection(PerceptionOptions.Perception));
     }
   }
 }
