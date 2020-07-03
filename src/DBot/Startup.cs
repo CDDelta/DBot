@@ -36,17 +36,17 @@ namespace DBot
             .ConfigureHostConfiguration(configBuilder =>
             {
               configBuilder.SetBasePath(Directory.GetCurrentDirectory());
-              configBuilder.AddYamlFile("config.yaml", optional: false, reloadOnChange: true);
+              configBuilder.AddYamlFile("config.yaml");
             })
             .ConfigureLogging((hostingContext, logging) =>
             {
+              logging.AddConfiguration(hostingContext.Configuration.GetSection("Logging"));
               logging.AddDebug();
             })
             .ConfigureServices((hostContext, services) =>
             {
               var config = hostContext.Configuration;
               services.AddOptions();
-
               services
                 .AddHostedService<InputModule>()
                 .AddSingleton<ConsoleInput>();

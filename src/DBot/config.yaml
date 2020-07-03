@@ -1,2 +1,6 @@
 perception:
   depthMapStrideLength: 31
+
+logging:
+  logLevel:
+    default: Information
