@@ -14,29 +14,19 @@ namespace DBot.Director
   {
     private readonly ConsoleInput consoleInput;
     private readonly RootCommand rootCommand;
-    private readonly IConfiguration configuration;
     private readonly ILogger<DirectorModule> logger;
 
     public DirectorModule(
       ConsoleInput consoleInput,
-      IConfiguration configuration,
       ILogger<DirectorModule> logger)
     {
       this.consoleInput = consoleInput;
-      this.configuration = configuration;
       this.logger = logger;
 
       var m = typeof(DirectorModule);
 
-      var configSetCmd = new Command("set");
-      configSetCmd.ConfigureFromMethod(m.GetMethod(nameof(SetConfigValue)), this);
-
       rootCommand = new RootCommand()
       {
-        new Command("config")
-        {
-          configSetCmd
-        }
       };
     }
 
@@ -50,11 +40,6 @@ namespace DBot.Director
     private void OnReceiveConsoleInput(object sender, string input)
     {
       rootCommand.Invoke(input);
-    }
-
-    public void SetConfigValue(string path, string value)
-    {
-      configuration[path] = value;
     }
 
     public Task StopAsync(CancellationToken cancellationToken) => Task.CompletedTask;

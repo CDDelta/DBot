@@ -8,15 +8,15 @@ namespace DBot.Perception
 {
   public class PerceptionModule : IHostedService, IUpdatableModule
   {
-    private readonly IOptionsMonitor<PerceptionOptions> optionsMonitor;
+    private readonly PerceptionOptions options;
     private readonly ILogger logger;
 
     public PerceptionModule(
         PointCloudBuilder pointCloudBuilder,
-        IOptionsMonitor<PerceptionOptions> optionsMonitor,
+        IOptions<PerceptionOptions> options,
         ILogger<PerceptionModule> logger)
     {
-      this.optionsMonitor = optionsMonitor;
+      this.options = options.Value;
       this.logger = logger;
     }
 
